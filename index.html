@@ -23,10 +23,11 @@
             const list = document.getElementById("menuList");
 
             list.innerHTML = "";
+            list.textContent = "ID | Food | Price";
 
             foods.forEach(item => {
                 const li = document.createElement("li");
-                li.textContent = item.id + " - " + item.Food + " - " + item.Price;
+                li.textContent = item.id + " | " + item.Food + " | " + item.Price;
                 list.appendChild(li);
             });
         }
