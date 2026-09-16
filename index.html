@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Food Menu</title>
+</head>
+<body>
+
+    <button onclick="loadMenu()">Display all Food menu</button>
+    <ul id="menuList"></ul>
+    
+    <br>
+
+    ID <input type="number" id="searchId">
+    <button onclick="searchFood()">Search</button>
+    
+    <p id="searchResult"></p>
+
+    <script>
+        async function loadMenu() {
+            const response = await fetch("/api/Foods");
+            const foods = await response.json();
+            const list = document.getElementById("menuList");
+
+            list.innerHTML = "";
+
+            foods.forEach(item => {
+                const li = document.createElement("li");
+                li.textContent = item.id + " - " + item.Food + " - " + item.Price;
+                list.appendChild(li);
+            });
+        }
+
+        async function searchFood() {
+            const id = document.getElementById("searchId").value;
+            const resultElement = document.getElementById("searchResult");
+            
+            if (!id) return;
+
+            const response = await fetch("/api/Foods/" + id);
+            
+            if (response.status === 404) {
+                resultElement.textContent = "Food not found";
+                return;
+            }
+
+            const food = await response.json();
+            resultElement.textContent = food.Food + " - " + food.Price;
+        }
+    </script>
+
+</body>
+</html>
